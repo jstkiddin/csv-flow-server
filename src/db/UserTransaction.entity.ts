@@ -8,9 +8,9 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UserEntity } from './User.entity';
-import { TransactionsEntity } from './Transacxtion.entity';
+import { TransactionsEntity } from './Transacation.entity';
 
-@Entity()
+@Entity('user-transaction')
 export class UserTransactionsEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -19,7 +19,7 @@ export class UserTransactionsEntity {
   fileName: string;
 
   @ManyToOne(() => UserEntity, (user: UserEntity) => user.id)
-  @Index()
+  // @Index()
   @JoinColumn()
   user: UserEntity;
 
@@ -27,7 +27,7 @@ export class UserTransactionsEntity {
     () => TransactionsEntity,
     (transaction: TransactionsEntity) => transaction.id,
   )
-  @Index()
+  // @Index()
   @JoinColumn()
   transactions: TransactionsEntity[];
 }

@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { UserTransactionsEntity } from './UserTransaction.entity';
 
-@Entity()
+@Entity('transactions')
 export class TransactionsEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -29,7 +29,7 @@ export class TransactionsEntity {
     () => UserTransactionsEntity,
     (dataFile: UserTransactionsEntity) => dataFile.id,
   )
-  @Index()
+  // @Index()
   @JoinColumn()
   dataFile: UserTransactionsEntity;
 }
