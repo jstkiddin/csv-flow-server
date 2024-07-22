@@ -1,12 +1,39 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
+import { JwtAuthGuard } from './auth/guards/jwt.guard';
+import { GetToken } from './decorators/get-token.decorator';
+import { UserCredentialsDto, UserDto } from './dtos/users.dto';
 import { UserService } from './users.service';
 
-@Controller()
+@Controller('users')
 export class UserController {
-  constructor(private readonly appService: UserService) {}
+  constructor(private readonly userService: UserService) {}
+  @Post('register')
+  @UsePipes(new ValidationPipe())
+  async register(
+    @Body() createUserDto: UserCredentialsDto,
+  ): Promise<{ token: string; user: UserDto }> {
+    return await this.userService.register(createUserDto);
+  }
+
+  @Post('login')
+  @UsePipes(new ValidationPipe())
+  async login(
+    @Body() loginUserDto: UserCredentialsDto,
+  ): Promise<{ token: string; user: UserDto }> {
+    return await this.userService.login(loginUserDto);
+  }
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @UseGuards(JwtAuthGuard)
+  getCurrentUser(@GetToken() email: string) {
+    return this.userService.fetchCurrentUser(email);
   }
 }

@@ -1,18 +1,9 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { BaseEntity } from './Base.entity';
 import { UserTransactionsEntity } from './UserTransaction.entity';
 
 @Entity('transactions')
-export class TransactionsEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class TransactionsEntity extends BaseEntity {
   @Column()
   status: string;
 
@@ -29,7 +20,6 @@ export class TransactionsEntity {
     () => UserTransactionsEntity,
     (dataFile: UserTransactionsEntity) => dataFile.id,
   )
-  // @Index()
   @JoinColumn()
   dataFile: UserTransactionsEntity;
 }

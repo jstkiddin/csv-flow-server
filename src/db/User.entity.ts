@@ -1,19 +1,10 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  Unique,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany } from 'typeorm';
+import { BaseEntity } from './Base.entity';
+import { RefreshTokenEntity } from './RefreshToken.entity';
 import { UserTransactionsEntity } from './UserTransaction.entity';
 
 @Entity('users')
-export class UserEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class UserEntity extends BaseEntity {
   @Column({ unique: true, nullable: false })
   email: string;
 
@@ -23,8 +14,15 @@ export class UserEntity {
   @OneToMany(
     () => UserTransactionsEntity,
     (dataFile: UserTransactionsEntity) => dataFile.id,
+    {
+      cascade: true,
+    },
   )
-  // @Index()
   @JoinColumn()
   dataFile: UserTransactionsEntity[];
+
+  @OneToMany(() => RefreshTokenEntity, (refreshToken) => refreshToken.user, {
+    cascade: true,
+  })
+  refreshTokens: RefreshTokenEntity[];
 }

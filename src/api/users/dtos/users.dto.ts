@@ -1,8 +1,9 @@
-export interface CreateUserDto {
+export interface UserCredentialsDto {
   email: string;
   password: string;
 }
-export interface LoginUserDto {
+
+export interface UserDto {
+  id: string;
   email: string;
-  password: string;
 }

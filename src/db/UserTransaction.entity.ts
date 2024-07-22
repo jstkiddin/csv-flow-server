@@ -1,33 +1,24 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { UserEntity } from './User.entity';
 import { TransactionsEntity } from './Transacation.entity';
+import { BaseEntity } from './Base.entity';
 
 @Entity('user-transaction')
-export class UserTransactionsEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class UserTransactionsEntity extends BaseEntity {
   @Column()
   fileName: string;
 
   @ManyToOne(() => UserEntity, (user: UserEntity) => user.id)
-  // @Index()
   @JoinColumn()
   user: UserEntity;
 
   @OneToMany(
     () => TransactionsEntity,
     (transaction: TransactionsEntity) => transaction.id,
+    {
+      cascade: true,
+    },
   )
-  // @Index()
   @JoinColumn()
   transactions: TransactionsEntity[];
 }
