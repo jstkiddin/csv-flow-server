@@ -82,7 +82,6 @@ export class UserService {
   }> {
     const { email, password } = loginUserDto;
 
-    console.log('log', loginUserDto);
     const user = await this.validateUser({ email, password });
 
     const payload = {
